@@ -15,3 +15,6 @@ class Posts(models.Model):
 
     author = models.ForeignKey(User , on_delete=models.CASCADE)
     # on_delete parameter does that on deltetion of user after creating a post , then the post should also get deleted
+
+    def __str__(self) -> str:
+        return self.title
