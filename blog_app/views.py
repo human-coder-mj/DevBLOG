@@ -13,11 +13,11 @@ def home(request):
     context = {
         "posts" : Posts.objects.all()
     }
-    return render(request , "html_templates/home.html" ,context)
+    return render(request , "blog_html_templates/home.html" ,context)
 
 
 
 
 
 def about(request):
-    return render(request , "html_templates/about.html" , {"title" : "About"})
+    return render(request , "blog_html_templates/about.html" , {"title" : "About"})
