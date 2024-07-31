@@ -18,6 +18,9 @@ from django.contrib import admin
 from django.urls import path , include
 from users_app import views as user_views
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,3 +30,7 @@ urlpatterns = [
     path('logout/', user_views.logout_view , name="logout"),
     path("", include('blog_app.urls')), #here the empty string for`` the route path indicatse that the route path is for the Home page 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
