@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Posts
 from django.views.generic import (
-    ListView , DetailView , CreateView , UpdateView)
+    ListView , DetailView , CreateView , UpdateView , DeleteView
+)
 from django.contrib.auth.mixins import LoginRequiredMixin , UserPassesTestMixin
 
 # def home(request):
@@ -58,6 +59,20 @@ class PostUpdateView(LoginRequiredMixin , UserPassesTestMixin ,  UpdateView):
         if self.request.user == post.author:
             return True
         return False
+
+class PostDeleteView(LoginRequiredMixin , UserPassesTestMixin , DeleteView):
+    model = Posts
+    template_name = "blog_html_templates/post_confirm_delete.html"
+    success_url = "/"
+
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
+
+    pass
 
 #About Page View
 def about(request):
