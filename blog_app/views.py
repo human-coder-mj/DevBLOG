@@ -22,6 +22,11 @@ class PostListView(ListView):
     ordering = ["-date_posted"] #for ordering the blogs according to the date posted , with the newest blog at top
     pass
 
+class PostDetailView(DetailView):
+    model = Posts
+    template_name = "blog_html_templates/post_detail.html"
+    pass
+
 #About Page View
 def about(request):
     return render(request , "blog_html_templates/about.html" , {"title" : "About"})
