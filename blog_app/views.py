@@ -2,8 +2,9 @@ from django.forms import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Posts
-from django.views.generic import ListView , DetailView , CreateView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import (
+    ListView , DetailView , CreateView , UpdateView)
+from django.contrib.auth.mixins import LoginRequiredMixin , UserPassesTestMixin
 
 # def home(request):
 #     return HttpResponse("<h1>Blog-Home</h1>")
@@ -41,6 +42,22 @@ class PostCreateView(LoginRequiredMixin , CreateView):
         return super().form_valid(form)
 
     pass
+
+class PostUpdateView(LoginRequiredMixin , UserPassesTestMixin ,  UpdateView):
+    model = Posts
+    fields = ['title' , 'content']
+    template_name = "blog_html_templates/post_form.html"
+    success_url = "/"
+
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
 
 #About Page View
 def about(request):
