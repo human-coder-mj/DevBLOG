@@ -1,7 +1,9 @@
+from django.forms import BaseModelForm
+from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Posts
-from django.views.generic import ListView , DetailView
-# from django.http import HttpResponse
+from django.views.generic import ListView , DetailView , CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # def home(request):
 #     return HttpResponse("<h1>Blog-Home</h1>")
@@ -22,9 +24,22 @@ class PostListView(ListView):
     ordering = ["-date_posted"] #for ordering the blogs according to the date posted , with the newest blog at top
     pass
 
+#Post Detail Page View
 class PostDetailView(DetailView):
     model = Posts
     template_name = "blog_html_templates/post_detail.html"
+    pass
+
+class PostCreateView(LoginRequiredMixin , CreateView):
+    model = Posts
+    fields = ['title' , 'content']
+    template_name = "blog_html_templates/post_form.html"
+    success_url = '/'
+
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
     pass
 
 #About Page View
