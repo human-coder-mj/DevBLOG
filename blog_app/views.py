@@ -27,6 +27,7 @@ class PostListView(ListView):
     template_name = "blog_html_templates/home.html"
     context_object_name = "posts"
     ordering = ["-date_posted"] #for ordering the blogs according to the date posted , with the newest blog at top
+    paginate_by = 4
     pass
 
 #Post Detail Page View
@@ -81,6 +82,7 @@ class UserPostListView(ListView):
     model = Posts
     template_name = "blog_html_templates/user_post.html"
     context_object_name = "posts"
+    paginate_by = 4
 
     def get_queryset(self) -> QuerySet[Any]:
         user = get_object_or_404(User , username=self.kwargs.get('username'))
