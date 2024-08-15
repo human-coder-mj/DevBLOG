@@ -1,11 +1,14 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.forms import BaseModelForm
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render , get_object_or_404
 from .models import Posts
 from django.views.generic import (
     ListView , DetailView , CreateView , UpdateView , DeleteView
 )
 from django.contrib.auth.mixins import LoginRequiredMixin , UserPassesTestMixin
+from django.contrib.auth.models import User
 
 # def home(request):
 #     return HttpResponse("<h1>Blog-Home</h1>")
@@ -71,6 +74,17 @@ class PostDeleteView(LoginRequiredMixin , UserPassesTestMixin , DeleteView):
         if self.request.user == post.author:
             return True
         return False
+
+    pass
+
+class UserPostListView(ListView):
+    model = Posts
+    template_name = "blog_html_templates/user_post.html"
+    context_object_name = "posts"
+
+    def get_queryset(self) -> QuerySet[Any]:
+        user = get_object_or_404(User , username=self.kwargs.get('username'))
+        return Posts.objects.filter(author = user).order_by('-date_posted')
 
     pass
 
