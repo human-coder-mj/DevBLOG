@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'users_profile.apps.UsersProfileConfig',
     'user_posts.apps.UserPostsConfig',
     'comments_app.apps.CommentsAppConfig',
+    'votes_app.apps.VotesAppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
